@@ -8,7 +8,7 @@ For analytical use, collected dataset will be stored in local mongoDB. It is tru
 
 ## Install 
 #### Authentification 
-Get your NYT API key from [here]() and set an environment variable as below.
+Get your NYT API key [here](https://developer.nytimes.com/) and set an environment variable as below.
 ```bash
 # bash_profile or other profile script based on whatever shell you use   
 vim ~/.bash_profile 
@@ -44,23 +44,38 @@ pipenv install
 
 ## Usage 
 
-#### For Scraping 
 ```bash
-pipenv run python3 scraper.py --from_date='2017-01-02' --to_date='2017-04-01' --keyword='gun'
+usage: [-h] --from_date FROM_DATE --to_date TO_DATE --keyword KEYWORD
+
+cli argument for scarping articles
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --from_date FROM_DATE
+                        date query articles from
+  --to_date TO_DATE     date query articles to
+  --keyword KEYWORD     keyword to query articles
+```
+
+#### For Scraping 
+For example, If you want to search articles about 'gun' during the first 3 months in 2017, then 
+run as follows. 
+```bash
+pipenv run python3 scraper.py --from_date='2017-01-01' --to_date='2017-03-31' --keyword='gun'
 ```
 
 #### Getting data from mongoDB as a dataframe object 
 ```python
 # get db client 
 import pymongo 
-from pymo
-ngo import MongoClient
+from pymongo import MongoClient
 client = MongoClient()
 db = client.nytimes
 collection = db.articles
 
 # make dataframe out of mongoDB
-columns = []
+columns =  ['_id', 'web_url', 'pub_date', 'document_type', 
+		'type_of_material', 'word_count', 'keywords', 'text']
 df = pd.DataFrame(list(db.articles.find()), columns=columns)
 ``` 
 
