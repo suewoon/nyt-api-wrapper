@@ -7,7 +7,7 @@ name = "pypi"
 
 [packages]
 
-pymongo = "==3.5.1"
+pymongo = ">=3.5.1"
 requests = "*"
 pandas = "*"
 "bs4" = "*"

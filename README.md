@@ -2,9 +2,11 @@ Web Scraping New York Times Articles
 ------------------------
 
 ## Scraper 
+<img src='uage-example.png'>
 Scraper is a class for collecting article data from New York Times based on query keyword. First, this will fetch article meta data such as "page url", "keywords" and "type of material" through NYT [article search API](https://developer.nytimes.com/article_search_v2.json#/README). Next, starts scraping article contents by given page url. 
 
-For analytical use, collected dataset will be stored in local mongoDB. It is true that this is not the best way to save long text in a single field, but one, body contents are not that large and two, it is implemented as personal academic use. So, you can modify the later part of this code to whatever storage that suits you.  
+For analytical use, collected dataset will be stored in local mongoDB. It is true that this is not the best way to save long text in a single field, but one, body contents are not that large and two, it is implemented as personal academic use. So, Only thing you need is to modify `scrape_and_save` code to whatever storage that suits you.  
+
 
 ## Install 
 #### Authentification 
@@ -21,21 +23,29 @@ You need to set up a mongoDB(community edition) in your local environment. If yo
 ```bash
 brew update  
 brew install mongodb
+
+# make directory where files locate
+mkdir -p /data/db
+
+# check permission
+sudo chown -R `id -un` /data/db
 ```
-Now you can run mongoDB 
+Now you can run mongoDB
 ```bash
 # start mongoDB  
-mongod
+brew services start mongodb 
 
-# try this on another terminal to check if it listens  
-mongo --host 127.0.0.1:27017 
+# try this in order to check if it listens  
+brew services list | grep mongodb
+
+# stop mongoDB
+brew services stop mongodb
 ```
 
-Just press Ctrl+C in the terminal if you want to shut it down.
-
+By default, dbPath: `/usr/local/var/mongodb`, config path: `/usr/local/etc/mongod.conf`, 
+system log path: `/usr/local/var/log/mongodb/mongo.log`
 
 If you are not on mac, visit [here](https://docs.mongodb.com/manual/administration/install-community/)  
-
 
 #### Install requirements 
 ```bash
@@ -58,10 +68,11 @@ optional arguments:
 ```
 
 #### For Scraping 
-For example, If you want to search articles about 'gun' during the first 3 months in 2017, then 
+For example, If you want to search articles about 'gun' during the first 3 months of 2017, then 
 run as follows. 
 ```bash
-pipenv run python3 scraper.py --from_date='2017-01-01' --to_date='2017-03-31' --keyword='gun'
+# YYYYMMDD format for date
+pipenv run python3 scraper.py --from_date='20170101' --to_date='20170331' --keyword='gun control'
 ```
 
 #### Getting data from mongoDB as a dataframe object 
@@ -75,7 +86,7 @@ collection = db.articles
 
 # make dataframe out of mongoDB
 columns =  ['_id', 'web_url', 'pub_date', 'document_type', 
-		'type_of_material', 'word_count', 'keywords', 'text']
+		'type_of_material', 'word_count', 'keywords', 'query', 'text']
 df = pd.DataFrame(list(db.articles.find()), columns=columns)
 ``` 
 
