@@ -1,0 +1,17 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+pymongo = "==3.5.1"
+requests = "*"
+pandas = "*"
+"bs4" = "*"
+
+
+[dev-packages]
+
