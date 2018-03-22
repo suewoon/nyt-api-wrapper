@@ -23,7 +23,6 @@ source ~/.bash_profile
 #### Set up local mongo DB
 You need to set up a mongoDB(community edition) in your local environment. If you're on mac, you can easily install with homebrew. 
 ```
-
 brew update  
 brew install mongodb
 
