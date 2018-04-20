@@ -7,8 +7,7 @@ Web Scraping New York Times Articles
 
 Scraper is a class for collecting article data from New York Times based on query keyword. First, this will fetch article meta data such as "page url", "keywords" and "type of material" through NYT [article search API](https://developer.nytimes.com/article_search_v2.json). Next, starts scraping article contents by given page url. 
 
-For analytical use, collected dataset will be stored in local mongoDB. It is true that this is not the best way to save long text in a single field, but one, body contents are not that large and two, it is implemented as personal academic use. So, Only thing you need is to modify `scrape_and_save` code to whatever storage that suits you.  
-
+For analytical use, collected dataset will be stored in local MongoDB. If you need to change the storage, modify `scrape_and_save`.  
 
 ## Install 
 #### Authentification 
@@ -31,6 +30,12 @@ mkdir -p /data/db
 
 # check permission
 sudo chown -R `id -un` /data/db
+
+# add path
+vim ~/.bash_profile 
+export MONGO_PATH=/usr/local/mongodb
+export PATH="$PATH:$MONGO_PATH/bin"
+source ~/.bash_profile 
 ```
 Now you can run mongoDB
 ```
